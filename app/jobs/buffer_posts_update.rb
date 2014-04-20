@@ -6,6 +6,8 @@ class BufferPostsUpdate < Struct.new(:value)
 	  profiles_data.each do |profile_data|
 	  	profile_ids.push(profile_data[:id])
 	  end
-	  puts profile_ids
+	  profile_ids.each do |profile_id|
+	    client.updates_by_profile_id(profile_id, options = {count: 100, status: "sent"})
+	  end
 	end
 end
