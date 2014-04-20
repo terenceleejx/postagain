@@ -1,6 +1,5 @@
 <% if current_user.provider == 'buffer' %>
-  <%= link_to "Scan Buffer posts" %>
-  <% buffer_scan %>
+  <%= link_to "Scan Buffer posts", buffer_scan_path %>
   <%# buffer_post(["51b560b03f9c36c649000009"], "test http://www.google.com") %>
 <% else %>
   <%= link_to "Authorize Buffer", user_omniauth_authorize_path(:buffer) %>

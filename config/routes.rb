@@ -6,6 +6,7 @@ Postagain::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root to: 'home#index'
+  get '/buffer_scan', to: 'home#buffer_scan'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

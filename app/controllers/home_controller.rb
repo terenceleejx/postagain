@@ -10,5 +10,6 @@ class HomeController < ApplicationController
   end
   def buffer_scan
     Delayed::Job.enqueue BufferPostsUpdate.new
+    redirect_to root_path
   end
 end
