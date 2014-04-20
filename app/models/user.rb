@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth, user_email)
     auth.slice(:provider, :uid)
-    user = User.find_by email: user_email
-    user.provider = auth.provider
-    user.uid = auth.uid
-    user.save
+    @user = User.find_by email: user_email
+    @user.provider = auth.provider
+    @user.uid = auth.uid
+    @user.save
   end
 
   def self.new_with_session(params, session)
