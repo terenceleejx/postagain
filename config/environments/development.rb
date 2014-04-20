@@ -28,6 +28,6 @@ Postagain::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
-  config.asset_host = 'http://storms-end-rails-92692.apne1.nitrousbox.com/'
+  config.asset_host = 'localhost:3000'
 end
 

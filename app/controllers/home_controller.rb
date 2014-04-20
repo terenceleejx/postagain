@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
+  before_filter :set_no_cache
 	helper_method :buffer_post
-	helper_method :buffer_scan
   def index
   end
   def buffer_post(profile_ids, text)
@@ -11,5 +11,10 @@ class HomeController < ApplicationController
   def buffer_scan
     Delayed::Job.enqueue BufferPostsUpdate.new
     redirect_to root_path
+  end
+  def set_no_cache
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 end
