@@ -1,30 +1,43 @@
-<div class="container">
 <% client = Buff::Client.new(Figaro.env.buffer_access_token) %>
 <% if current_user.provider == 'buffer' %>
   <%# buffer_post(["51b560b03f9c36c649000009"], "test http://www.google.com") %>
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" id="profile-tab">
   	<% count = 0 %>
   	<% client.profiles.each do |profile| %>
   	  <% count += 1 %>
   	  <% if count == 1 %>
-  	<li class = "active">
+  	  <li class = "active">
   		<% else %>
-    <li>
+      <li>
     	<% end %>
     	<a href="#<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>" data-toggle="tab">
     		<%= "#{profile["service"].humanize}: #{profile["service_username"]}" %></a>
-    </li>
+      </li>
     <% end %>
+    <% count = 0 %>
   </ul>
+  <div class="tab-content">
+    <% client.profiles.each do |profile| %>
+  	  <% count += 1 %>
+  	  <% if count == 1 %>
+  	  <div class="tab-pane active" id="<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>">
+  		<% else %>
+      <div class="tab-pane" id="<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>">
+    	<% end %>
+    	  <%= count %>
+      </div>
+    <% end %>
+  </div>
   <%= link_to "Scan Buffer posts", buffer_scan_path %>
 <% else %>
 	<h1>Welcome to PostAgain.</h1>
   <%= link_to "Authorize Buffer", user_omniauth_authorize_path(:buffer) %>
 <% end %>
-</div>
+
 <script type="text/javascript">
 $(function () {
 
+		$('#profile-tab a:last').tab('show')
     $('.footable').footable();
 
 });
