@@ -32,7 +32,7 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    	else
 	    		existing_post = Post.where(buffer_post_id: update["id"])
 	    		# Update statistics for existing post only if it was changed and if it is less than a week old.
-	    		if existing_post.select("statistics") != update["statistics"] && Time.at(update["sent_at"]) >= (Time.now - 604800).to_date
+	    		if Time.at(update["sent_at"]) >= (Time.now - 604800).to_date
 	    		  Post.update(existing_post.select("id"), statistics: update["statistics"])
 	    		  updated_post += 1
 	    		end
