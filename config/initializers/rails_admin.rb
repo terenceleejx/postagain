@@ -1,12 +1,22 @@
 RailsAdmin.config do |config|
+  ADMIN_EMAILS= ['terence.lee.jx@gmail.com']
+  config.main_app_name = ["PostAgain"]
 
   ### Popular gems integration
 
   ## == Devise ==
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
-  # config.current_user_method(&:current_user)
+  config.authenticate_with do
+     warden.authenticate! scope: :user
+  end
+  config.current_user_method(&:current_user)
+
+  ## Rails admin: Only admins can access
+  config.authorize_with do 
+    is_admin = ADMIN_EMAILS.include?(current_user.email) 
+    if current_user
+      redirect_to root_path unless is_admin 
+    end
+  end
 
   ## == Cancan ==
   # config.authorize_with :cancan

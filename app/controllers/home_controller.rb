@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     client.create_update(options = {body: {profile_ids: profile_ids, text: text}})
   end
   def buffer_scan
-    Delayed::Job.enqueue BufferPostsUpdate.new
+    Delayed::Job.enqueue BufferPostsUpdate.new(current_user.id)
     redirect_to root_path
   end
 end
