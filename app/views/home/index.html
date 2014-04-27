@@ -27,39 +27,50 @@
     	  <table class="footable table">
     	  	<thead>
     	  		<tr>
-    	  			<th>Message</th>
-    	  			<th>Link</th>
     	  			<% if profile["service"] == "linkedin" %>
+    	  			<th>Message</th>
+    	  			<th>Content</th>
     	  			<th>Comments</th>
     	  			<th>Likes</th>
     	  			<th>Reshares</th>
     	  			<th>Clicks</th>
     	  			<% elsif profile["service"] == "facebook" %>
+    	  			<th>Message</th>
+    	  			<th>Content</th>
     	  			<th>Comments</th>
     	  			<th>Likes</th>
     	  			<% elsif profile["service"] == "twitter" %>
-    	  			<th>RT</th>
+    	  			<th>Tweet</th>
+    	  			<th>Retweets</th>
     	  			<th>Favorites</th>
     	  			<th>Mentions</th>
     	  			<th>Clicks</th>    
     	  			<th>Reach</th>  	  				
     	  			<% end %>
     	  			<th>Sent date</th>
-    	  			<th></th>
+    	  			<th><!-- Buffer button and delete --></th>
     	  		</tr>
     	  	</thead>
     	  	  <% current_user.posts.each do |post| %>
-    	  	   <% if post.profile_id == profile["id"] %>
-    	  	   <tr>
-    	  	   	<td><%= post.text %></td>
-    	  	   	<td></td>
-    	  	   	<% post.statistics.each do |metric, value| %>
-    	  	   	<td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
-    	  	   	<% end %>
-     	  	   	<td></td>
-    	  	   	<td></td>
-    	  	   </tr>
-    	  	   <% end %>
+    	  	    <% if post.profile_id == profile["id"] %>
+	    	  	    <tr>
+		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
+		    	  	   	  <td><%= post.text %></td>
+		    	  	   	  <% if post.media.blank? == false %>
+		    	  	   	    <td><a href="<%= post.media["link"] %>"><%= post.media["title"] %></a></td>
+		    	  	      <% else %>
+		    	  	        <td></td>
+		    	  	      <% end %>
+	    	  	   	  <% elsif profile["service"] == "twitter" %>
+	    	  	   	    <td><%= post.text %></td>	
+	    	  	   	  <% end %>
+	    	  	   	  <% post.statistics.each do |metric, value| %>
+	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
+	    	  	   	  <% end %>
+	     	  	   	  <td>Date</td>
+	    	  	   	  <td><span class="glyphicon glyphicon-remove"></span> Buffer</td>
+	    	  	    </tr>
+    	  	    <% end %>
     	  	  <% end %>
     	  </table>
       </div>

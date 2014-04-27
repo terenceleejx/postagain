@@ -14,7 +14,6 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    updates = client.updates_by_profile_id(profile_id, options = {count: 100, :status => "sent"})
 	    # first key in updates hash reveals the total number of updates
 	    updates["updates"].each do |update|
-	    	puts update
 	    	if !Post.exists?(:buffer_post_id => update["id"]) == true
 	    		Post.create({
 	    			text: update["text"],
@@ -26,6 +25,8 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    			day: update["day"],
 	    			due_at: update["due_at"],
 	    			due_time: update["due_time"],
+	    			sent_at: update["sent_at"],
+	    			media: update["media"],
 	    			statistics: update["statistics"],
 	    			profile_service: update["profile_service"]
 	    		})
