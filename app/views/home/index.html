@@ -24,7 +24,17 @@
   		<% else %>
       <div class="tab-pane" id="<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>">
     	<% end %>
-    	  <%= count %>
+    	  <table class="footable table">
+    	  	<thead>
+    	  		<tr>
+    	  			<th>Message</th>
+    	  			<th>Link</th>
+    	  			<th>Stats</th>
+    	  			<th>Sent date</th>
+    	  			<th></th>
+    	  		</tr>
+    	  	</thead>
+    	  </table>
       </div>
     <% end %>
   </div>
