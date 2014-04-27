@@ -1,10 +1,27 @@
+<div class="container">
+<% client = Buff::Client.new(Figaro.env.buffer_access_token) %>
 <% if current_user.provider == 'buffer' %>
-  <%= link_to "Scan Buffer posts", buffer_scan_path %>
   <%# buffer_post(["51b560b03f9c36c649000009"], "test http://www.google.com") %>
+  <ul class="nav nav-tabs">
+  	<% count = 0 %>
+  	<% client.profiles.each do |profile| %>
+  	  <% count += 1 %>
+  	  <% if count == 1 %>
+  	<li class = "active">
+  		<% else %>
+    <li>
+    	<% end %>
+    	<a href="#<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>" data-toggle="tab">
+    		<%= "#{profile["service"].humanize}: #{profile["service_username"]}" %></a>
+    </li>
+    <% end %>
+  </ul>
+  <%= link_to "Scan Buffer posts", buffer_scan_path %>
 <% else %>
+	<h1>Welcome to PostAgain.</h1>
   <%= link_to "Authorize Buffer", user_omniauth_authorize_path(:buffer) %>
 <% end %>
-
+</div>
 <script type="text/javascript">
 $(function () {
 
