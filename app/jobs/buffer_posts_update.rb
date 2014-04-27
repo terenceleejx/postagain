@@ -8,10 +8,10 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	  	profile_ids.push(profile_data[:id])
 	  end
 	  # Retrieve 100 updates (max allowed by API) from each social media account.
-	  number = 0
+	  new_post = 0
+	  updated_post = 0
 	  profile_ids.each do |profile_id|
 	    updates = client.updates_by_profile_id(profile_id, options = {count: 100, :status => "sent"})
-	    # Save update in db if update is over 7 days old and does not exist in db.
 	    # first key in updates hash reveals the total number of updates
 	    updates["updates"].each do |update|
 	    	if !Post.exists?(:buffer_post_id => update["id"]) == true
@@ -28,11 +28,18 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    			statistics: update["statistics"],
 	    			profile_service: update["profile_service"]
 	    		})
-	    		number += 1
+	    		new_post += 1
 	    	else
+	    		existing_post = Post.where(buffer_post_id: update["id"])
+	    		# Update statistics for existing post only if it was changed and if it is less than a week old.
+	    		if existing_post.select("statistics") != update["statistics"] && Time.at(update["sent_at"]) >= (Time.now - 604800).to_date
+	    		  Post.update(existing_post.select("id"), statistics: update["statistics"])
+	    		  updated_post += 1
+	    		end
 	    	end
 	    end
 	  end
-    puts "#{number} posts saved."
+    puts "#{new_post} posts saved."
+    puts "#{updated_post} posts updated."
 	end
 end
