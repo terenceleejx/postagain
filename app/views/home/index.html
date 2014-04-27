@@ -29,11 +29,38 @@
     	  		<tr>
     	  			<th>Message</th>
     	  			<th>Link</th>
-    	  			<th>Stats</th>
+    	  			<% if profile["service"] == "linkedin" %>
+    	  			<th>Comments</th>
+    	  			<th>Likes</th>
+    	  			<th>Reshares</th>
+    	  			<th>Clicks</th>
+    	  			<% elsif profile["service"] == "facebook" %>
+    	  			<th>Comments</th>
+    	  			<th>Likes</th>
+    	  			<% elsif profile["service"] == "twitter" %>
+    	  			<th>RT</th>
+    	  			<th>Favorites</th>
+    	  			<th>Mentions</th>
+    	  			<th>Clicks</th>    
+    	  			<th>Reach</th>  	  				
+    	  			<% end %>
     	  			<th>Sent date</th>
     	  			<th></th>
     	  		</tr>
     	  	</thead>
+    	  	  <% current_user.posts.each do |post| %>
+    	  	   <% if post.profile_id == profile["id"] %>
+    	  	   <tr>
+    	  	   	<td><%= post.text %></td>
+    	  	   	<td></td>
+    	  	   	<% post.statistics.each do |metric, value| %>
+    	  	   	<td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
+    	  	   	<% end %>
+     	  	   	<td></td>
+    	  	   	<td></td>
+    	  	   </tr>
+    	  	   <% end %>
+    	  	  <% end %>
     	  </table>
       </div>
     <% end %>
