@@ -1,6 +1,6 @@
 class BufferPostsUpdate < Struct.new(:current_user_id)
 	def perform
-	  client = Buff::Client.new(Figaro.env.buffer_access_token)
+	  client = Buff::Client.new(User.find_by(uid: current_user_id).buffer_token)
 	  profiles_data = client.profiles
 	  profile_ids = Array.new
 	  # Save profile ids from each social media account to an array.
@@ -17,7 +17,7 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    	if !Post.exists?(:buffer_post_id => update["id"]) == true
 	    		Post.create({
 	    			text: update["text_formatted"],
-	    			user_id: current_user_id,
+	    			user_id: User.find_by(uid: current_user_id).id,
 	    			profile_id: update["profile_id"],
 	    			buffer_post_id: update["id"],
 	    			buffer_user_id: update["user_id"],

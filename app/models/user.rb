@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
     @user = User.find_by email: user_email
     @user.provider = auth.provider
     @user.uid = auth.uid
+    @user.buffer_token = auth['credentials']['token']
     @user.save
   end
 
