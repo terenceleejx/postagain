@@ -11,4 +11,9 @@ class HomeController < ApplicationController
     Delayed::Job.enqueue BufferPostsUpdate.new(current_user.id)
     redirect_to root_path
   end
+  def buffer_remove
+    post = Post.find_by(buffer_post_id: params[:buffer_post_id])
+    post.update(remove: true)
+    redirect_to root_path
+  end
 end

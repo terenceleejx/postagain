@@ -16,7 +16,7 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    updates["updates"].each do |update|
 	    	if !Post.exists?(:buffer_post_id => update["id"]) == true
 	    		Post.create({
-	    			text: update["text"],
+	    			text: update["text_formatted"],
 	    			user_id: current_user_id,
 	    			profile_id: update["profile_id"],
 	    			buffer_post_id: update["id"],

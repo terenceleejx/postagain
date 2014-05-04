@@ -29,14 +29,14 @@
     	  		<tr>
     	  			<% if profile["service"] == "linkedin" %>
     	  			<th>Message</th>
-    	  			<th>Content</th>
+    	  			<th>Link</th>
     	  			<th>Comments</th>
     	  			<th>Likes</th>
     	  			<th>Reshares</th>
     	  			<th>Clicks</th>
     	  			<% elsif profile["service"] == "facebook" %>
     	  			<th>Message</th>
-    	  			<th>Content</th>
+    	  			<th>Link</th>
     	  			<th>Comments</th>
     	  			<th>Likes</th>
     	  			<% elsif profile["service"] == "twitter" %>
@@ -48,29 +48,33 @@
     	  			<th>Reach</th>  	  				
     	  			<% end %>
     	  			<th>Sent date</th>
-    	  			<th><!-- Buffer button and delete --></th>
+    	  			<th><!-- Delete --></th>
+              <th><!-- Buffer --></th>
     	  		</tr>
     	  	</thead>
     	  	  <% current_user.posts.each do |post| %>
-    	  	    <% if post.profile_id == profile["id"] %>
-	    	  	    <tr>
-		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
-		    	  	   	  <td><%= post.text %></td>
-		    	  	   	  <% if post.media.blank? == false %>
-		    	  	   	    <td><a href="<%= post.media["link"] %>"><%= post.media["title"] %></a></td>
-		    	  	      <% else %>
-		    	  	        <td></td>
-		    	  	      <% end %>
-	    	  	   	  <% elsif profile["service"] == "twitter" %>
-	    	  	   	    <td><%= post.text %></td>	
-	    	  	   	  <% end %>
-	    	  	   	  <% post.statistics.each do |metric, value| %>
-	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
-	    	  	   	  <% end %>
-	     	  	   	  <td>Date</td>
-	    	  	   	  <td><span class="glyphicon glyphicon-remove"></span> Buffer</td>
-	    	  	    </tr>
-    	  	    <% end %>
+              <% if post.remove == false %>
+      	  	    <% if post.profile_id == profile["id"] %>
+  	    	  	    <tr>
+                    <td class="buffer-text"><%= post.text.html_safe %></td> 
+  		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
+  		    	  	   	  <% if post.media.blank? == false %>
+  		    	  	   	    <td class="buffer-url" data-url="<%= post.media["link"] %>"><a href="<%= post.media["link"] %>"><%= post.media["title"] %></a></td>
+  		    	  	      <% else %>
+  		    	  	        <td></td>
+  		    	  	      <% end %>
+                    <% end %>
+  	    	  	   	  <% post.statistics.each do |metric, value| %>
+  	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
+  	    	  	   	  <% end %>
+  	     	  	   	  <td>Date</td>
+  	    	  	   	  <td class="remove-button" style="width:3%">
+                      <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, buffer_remove_path(buffer_post_id: post.buffer_post_id) %>
+                    </td>
+                    <td class="buffer-button" style="width:5%"></td>
+  	    	  	    </tr>
+      	  	    <% end %>
+              <% end %>
     	  	  <% end %>
     	  </table>
       </div>
@@ -83,10 +87,27 @@
 <% end %>
 
 <script type="text/javascript">
-$(function () {
+  $(function () {
 
-		$('#profile-tab a:last').tab('show')
-    $('.footable').footable();
+      $('.glyphicon-remove').hide();
+      $('.footable').footable();
 
-});
+  });
+  $("tr").hover(
+    function() {
+      var post_url = "url=" + encodeURI($(this).children(".buffer-url").attr("data-url"));
+      var text = encodeURI($(this).children(".buffer-text").text());
+        if (post_url == "url=undefined") {
+          var url = "http://bufferapp.com/add?" + "text=" + text;
+          }
+        else {
+          var url = "http://bufferapp.com/add?" + post_url + "&text="+ text;
+        }
+        $(this).children(".buffer-button").append("<a href=\"" + url + "\" class=\"buffer-add-button\"  target=\"_blank\">Buffer</a>");
+        $(this).children(".remove-button").find(".glyphicon-remove").show();
+    }, function() {
+      $(this).children(".buffer-button").find(".buffer-add-button").remove();
+      $(this).children(".remove-button").find(".glyphicon-remove").hide();
+    }
+  );
 </script>
