@@ -97,8 +97,8 @@
   });
   $("tr").hover(
     function() {
-      var post_url = "url=" + encodeURI($(this).children(".buffer-url").attr("data-url"));
-      var text = encodeURI($(this).children(".buffer-text").text());
+      var post_url = "url=" + encodeURIComponent($(this).children(".buffer-url").attr("data-url"));
+      var text = encodeURIComponent($(this).children(".buffer-text").text().replace("#", ""));
         if (post_url == "url=undefined") {
           var url = "http://bufferapp.com/add?" + "text=" + text;
           }
