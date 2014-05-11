@@ -8,3 +8,4 @@ A web app to help Buffer users boost their social media engagement by letting th
 - Resurface old posts from Buffer.
 - Reshare popular posts back onto social networks through Buffer.
 - Sort posts by social network and popularity.
+- Filter out posts with zero traction.

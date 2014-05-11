@@ -16,6 +16,7 @@ class BufferPostsUpdate < Struct.new(:current_user_id)
 	    updates["updates"].each do |update|
 	  		added_key = 0
 	 		  exclude = false
+	 		  # check if post stats are zero
 	    	if update["profile_service"] == "linkedin" || update["profile_service"] == "twitter"
 	    		update["statistics"].each do |key, value|
 	    		  if value == 0
