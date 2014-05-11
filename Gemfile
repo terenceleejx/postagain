@@ -45,6 +45,8 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'delayed_job_active_record', '~> 4.0.1'
 
+gem 'newrelic_rpm'
+
 group :production do
   gem 'rails_12factor', '0.0.2'
 end
