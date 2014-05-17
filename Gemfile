@@ -36,7 +36,7 @@ group :doc do
 end
 
 gem 'devise', '~> 3.2.4'
-gem 'omniauth-buffer2'
+gem 'omniauth-buffer'
 gem 'buff', :github => 'bufferapp/buffer-ruby'
 
 gem 'rails_admin', '~> 0.6.1'
