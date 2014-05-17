@@ -50,6 +50,7 @@
         	  			<% end %>
         	  			<th data-type="numeric">Sent date</th>
         	  			<th><!-- Delete --></th>
+                  <th><!-- Pushback --></th>
                   <th><!-- Buffer --></th>
         	  		</tr>
         	  	</thead>
@@ -72,6 +73,8 @@
       	    	  	   	  <td class="remove-button" style="width:3%">
                           <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, buffer_remove_path(buffer_post_id: post.buffer_post_id) %>
                         </td>
+                        <td class="pushback-button">
+                          <%= link_to '<span class="glyphicon glyphicon-repeat"></span>'.html_safe %></td>
                         <td class="buffer-button" style="width:5%"></td>
       	    	  	    </tr>
           	  	  <% end %>
@@ -91,6 +94,7 @@
   $(function () {
 
       $('.glyphicon-remove').hide();
+      $('.glyphicon-repeat').hide();
       $('.footable').footable();
 
   });
@@ -106,9 +110,11 @@
         }
         $(this).children(".buffer-button").append("<a href=\"" + url + "\" class=\"buffer-add-button\"  target=\"_blank\">Buffer</a>");
         $(this).children(".remove-button").find(".glyphicon-remove").show();
+        $(this).children(".pushback-button").find(".glyphicon-repeat").show();
     }, function() {
       $(this).children(".buffer-button").find(".buffer-add-button").remove();
       $(this).children(".remove-button").find(".glyphicon-remove").hide();
+      $(this).children(".pushback-button").find(".glyphicon-repeat").hide();
     }
   );
 </script>
