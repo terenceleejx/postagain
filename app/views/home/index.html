@@ -56,28 +56,30 @@
         	  	</thead>
         	  	<% current_user.posts.each do |post| %>
                 <% if post.remove == false %>
-          	  	  <% if post.profile_id == profile["id"] %>
-      	    	  	    <tr>
-                        <td class="buffer-text"><%= post.text.html_safe %></td> 
-      		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
-      		    	  	   	  <% if post.media.blank? == false %>
-      		    	  	   	    <td class="buffer-url" data-url="<%= post.media["link"] %>"><a href="<%= post.media["link"] %>"><%= post.media["title"] %></a></td>
-      		    	  	      <% else %>
-      		    	  	        <td></td>
-      		    	  	      <% end %>
-                        <% end %>
-      	    	  	   	  <% post.statistics.each do |metric, value| %>
-      	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
-      	    	  	   	  <% end %>
-      	     	  	   	  <td data-value="<%= post.sent_at %>"><%= Time.at(post.sent_at).to_date %></td>
-      	    	  	   	  <td class="remove-button" style="width:3%">
-                          <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, buffer_remove_path(buffer_post_id: post.buffer_post_id) %>
-                        </td>
-                        <td class="pushback-button">
-                          <%= link_to '<span class="glyphicon glyphicon-repeat"></span>'.html_safe %></td>
-                        <td class="buffer-button" style="width:5%"></td>
-      	    	  	    </tr>
-          	  	  <% end %>
+                  <% if post.pushback.to_i + 2592000 < Time.now.to_i || post.pushback.blank? == true %>
+            	  	  <% if post.profile_id == profile["id"] %>
+        	    	  	    <tr>
+                          <td class="buffer-text"><%= post.text.html_safe %></td> 
+        		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
+        		    	  	   	  <% if post.media.blank? == false %>
+        		    	  	   	    <td class="buffer-url" data-url="<%= post.media["link"] %>"><a href="<%= post.media["link"] %>"><%= post.media["title"] %></a></td>
+        		    	  	      <% else %>
+        		    	  	        <td></td>
+        		    	  	      <% end %>
+                          <% end %>
+        	    	  	   	  <% post.statistics.each do |metric, value| %>
+        	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
+        	    	  	   	  <% end %>
+        	     	  	   	  <td data-value="<%= post.sent_at %>"><%= Time.at(post.sent_at).to_date %></td>
+        	    	  	   	  <td class="remove-button" style="width:3%">
+                            <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, buffer_remove_path(buffer_post_id: post.buffer_post_id) %>
+                          </td>
+                          <td class="pushback-button">
+                            <%= link_to '<span class="glyphicon glyphicon-repeat"></span>'.html_safe, buffer_pushback_path(buffer_post_id: post.buffer_post_id) %></td>
+                          <td class="buffer-button" style="width:5%"></td>
+        	    	  	    </tr>
+            	  	  <% end %>
+                  <% end %>
                 <% end %>
         	  	<% end %>
         	  </table>

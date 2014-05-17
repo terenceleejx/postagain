@@ -12,4 +12,9 @@ class HomeController < ApplicationController
     post.update(remove: true)
     redirect_to root_path
   end
+  def buffer_pushback
+    post = Post.find_by(buffer_post_id: params[:buffer_post_id])
+    post.update(pushback: Time.now)
+    redirect_to root_path
+  end
 end

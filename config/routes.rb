@@ -8,6 +8,7 @@ Postagain::Application.routes.draw do
   root to: 'home#index'
   get '/buffer_scan', to: 'home#buffer_scan'
   get '/buffer_remove', to: 'home#buffer_remove'
+  get '/buffer_pushback', to: 'home#buffer_pushback'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
