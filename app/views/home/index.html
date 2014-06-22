@@ -25,23 +25,23 @@
       		<% else %>
           <div class="tab-pane" id="<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>">
         	<% end %>
-        	  <table class="footable table" style="width:100%">
-        	  	<thead style="width:100%">
-        	  		<tr style="width:100%">
+        	  <table class="footable table" style="table-layout:fixed;width:100%">
+        	  	<thead>
+        	  		<tr>
         	  			<% if profile["service"] == "linkedin" %>
-        	  			<th>Message</th>
-        	  			<th>Link</th>
+        	  			<th style="width:25%">Message</th>
+        	  			<th style="width:25%">Link</th>
         	  			<th data-type="numeric" style="cursor:pointer">Comments</th>
         	  			<th data-type="numeric" style="cursor:pointer">Likes</th>
         	  			<th data-type="numeric" style="cursor:pointer">Reshares</th>
         	  			<th data-type="numeric" data-sort-initial="descending" style="cursor:pointer">Clicks</th>
         	  			<% elsif profile["service"] == "facebook" %>
-        	  			<th>Message</th>
+        	  			<th style="width:50%">Message</th>
         	  			<th>Link</th>
         	  			<th data-type="numeric" style="cursor:pointer">Comments</th>
         	  			<th data-type="numeric" data-sort-initial="descending" style="cursor:pointer">Likes</th>
         	  			<% elsif profile["service"] == "twitter" %>
-        	  			<th>Tweet</th>
+        	  			<th style="width:40%">Tweet</th>
         	  			<th data-type="numeric" style="cursor:pointer">Retweets</th>
         	  			<th data-type="numeric" style="cursor:pointer">Favorites</th>
         	  			<th data-type="numeric" style="cursor:pointer">Mentions</th>
@@ -49,16 +49,16 @@
         	  			<th data-type="numeric" data-sort-initial="descending">Reach</th>  	  				
         	  			<% end %>
         	  			<th data-type="numeric">Sent date</th>
-        	  			<th><!-- Delete --></th>
-                  <th><!-- Pushback --></th>
-                  <th><!-- Buffer --></th>
+        	  			<th style="width:3%"><!-- Delete --></th>
+                  <th style="width:3%"><!-- Pushback --></th>
+                  <th style="width:5%"><!-- Buffer --></th>
         	  		</tr>
         	  	</thead>
         	  	<% current_user.posts.each do |post| %>
                 <% if post.remove == false %>
                   <% if post.pushback.to_i + 2592000 < Time.now.to_i || post.pushback.blank? == true %>
             	  	  <% if post.profile_id == profile["id"] %>
-        	    	  	    <tr style="width:100%">
+        	    	  	    <tr>
                           <td class="buffer-text"><%= post.text.html_safe %></td> 
         		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
         		    	  	   	  <% if post.media.blank? == false %>
@@ -71,12 +71,12 @@
         	    	  	   	    <td><%= number_with_delimiter(value, :delimiter => ",", :separator => ".") %></td>
         	    	  	   	  <% end %>
         	     	  	   	  <td data-value="<%= post.sent_at %>"><%= Time.at(post.sent_at).to_date %></td>
-        	    	  	   	  <td class="remove-button" style="width:3%">
+        	    	  	   	  <td class="remove-button">
                             <%= link_to '<span class="glyphicon glyphicon-remove"></span>'.html_safe, buffer_remove_path(buffer_post_id: post.buffer_post_id) %>
                           </td>
-                          <td class="pushback-button" style="width:3%">
+                          <td class="pushback-button">
                             <%= link_to '<span class="glyphicon glyphicon-repeat"></span>'.html_safe, buffer_pushback_path(buffer_post_id: post.buffer_post_id) %></td>
-                          <td class="buffer-button" style="width:5%"></td>
+                          <td class="buffer-button"></td>
         	    	  	    </tr>
             	  	  <% end %>
                   <% end %>
