@@ -26,8 +26,8 @@
           <div class="tab-pane" id="<%= "#{profile["service"]}-#{profile["service_username"].gsub(" ","-")}" %>">
         	<% end %>
         	  <table class="footable table" style="width:100%">
-        	  	<thead>
-        	  		<tr>
+        	  	<thead style="width:100%">
+        	  		<tr style="width:100%">
         	  			<% if profile["service"] == "linkedin" %>
         	  			<th>Message</th>
         	  			<th>Link</th>
@@ -58,7 +58,7 @@
                 <% if post.remove == false %>
                   <% if post.pushback.to_i + 2592000 < Time.now.to_i || post.pushback.blank? == true %>
             	  	  <% if post.profile_id == profile["id"] %>
-        	    	  	    <tr>
+        	    	  	    <tr style="width:100%">
                           <td class="buffer-text"><%= post.text.html_safe %></td> 
         		    	  	    <% if profile["service"] == "linkedin" || profile["service"] == "facebook" %>
         		    	  	   	  <% if post.media.blank? == false %>
